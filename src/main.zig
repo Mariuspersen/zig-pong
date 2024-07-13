@@ -17,14 +17,20 @@ pub fn main() !void {
 
     var ball = Ball.init(Width / 2, Height / 2);
     var paddle1 = Paddle.init(60, Height / 2, 40, 160);
-    var paddle2 = Paddle.init(Width - 60, Height / 2, 40, 160);
+    var paddle2 = Paddle.init(Width - 60 - 40, Height / 2, 40, 160);
     var ai = Ai.init(&paddle2, &ball);
 
     while (!rl.windowShouldClose()) {
         rl.beginDrawing();
         defer rl.endDrawing();
+        defer rl.clearBackground(Gray);
 
-        ball.boundryCheck(Width, Height);
+        if (rl.isKeyPressed(rl.KeyboardKey.key_f1)) {
+            ball = Ball.init(Width / 2, Height / 2);
+        }
+
+        if (handleWinCondition(&ball)) continue;
+
         paddle1.handleCollision(&ball);
         paddle2.handleCollision(&ball);
 
@@ -35,7 +41,39 @@ pub fn main() !void {
         ball.draw();
         paddle1.draw();
         paddle2.draw();
-
-        rl.clearBackground(Gray);
     }
+}
+
+inline fn handleWinCondition(ball: *Ball) bool {
+    if (ball.boundryCheck(Width, Height)) |winner| {
+            switch (winner) {
+                .left => {
+                    rl.drawText(
+                        "Left Wins!",
+                        @divExact(Width, 2) - 150,
+                        @divExact(Height, 2),
+                        50,
+                        rl.Color.white,
+                    );
+                },
+                .right => {
+                    rl.drawText(
+                        "Right Wins!",
+                        @divExact(Width, 2) - 150,
+                        @divExact(Height, 2),
+                        50,
+                        rl.Color.white,
+                    );
+                },
+            }
+            rl.drawText(
+                "Press F1 to restart",
+                @divExact(Width, 2) - 275,
+                @divExact(Height, 2) + 200,
+                50,
+                rl.Color.white,
+            );
+            return true;
+        }
+        return false;
 }

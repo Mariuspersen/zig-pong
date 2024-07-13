@@ -13,6 +13,7 @@ const Title = "zong";
 
 pub fn main() !void {
     rl.initWindow(Width, Height, Title);
+    rl.setTargetFPS(60);
     defer rl.closeWindow();
 
     var ball = Ball.init(Width / 2, Height / 2);
@@ -46,34 +47,34 @@ pub fn main() !void {
 
 inline fn handleWinCondition(ball: *Ball) bool {
     if (ball.boundryCheck(Width, Height)) |winner| {
-            switch (winner) {
-                .left => {
-                    rl.drawText(
-                        "Left Wins!",
-                        @divExact(Width, 2) - 150,
-                        @divExact(Height, 2),
-                        50,
-                        rl.Color.white,
-                    );
-                },
-                .right => {
-                    rl.drawText(
-                        "Right Wins!",
-                        @divExact(Width, 2) - 150,
-                        @divExact(Height, 2),
-                        50,
-                        rl.Color.white,
-                    );
-                },
-            }
-            rl.drawText(
-                "Press F1 to restart",
-                @divExact(Width, 2) - 275,
-                @divExact(Height, 2) + 200,
-                50,
-                rl.Color.white,
-            );
-            return true;
+        switch (winner) {
+            .left => {
+                rl.drawText(
+                    "Left Wins!",
+                    @divExact(Width, 2) - 150,
+                    @divExact(Height, 2) - 300,
+                    50,
+                    rl.Color.white,
+                );
+            },
+            .right => {
+                rl.drawText(
+                    "Right Wins!",
+                    @divExact(Width, 2) - 150,
+                    @divExact(Height, 2) - 300,
+                    50,
+                    rl.Color.white,
+                );
+            },
         }
-        return false;
+        rl.drawText(
+            "Press F1 to restart",
+            @divExact(Width, 2) - 275,
+            @divExact(Height, 2),
+            50,
+            rl.Color.white,
+        );
+        return true;
+    }
+    return false;
 }

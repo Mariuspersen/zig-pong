@@ -20,8 +20,8 @@ pub fn init(x: f32, y: f32) Self {
 
     return .{
         .vel = rl.Vector2.init(
-            rnd.random().float(f32)/2,
-            rnd.random().float(f32)/3,
+            rnd.random().float(f32) * 30,
+            rnd.random().float(f32) * 10,
         ),
         .pos = rl.Vector2.init(
             x,

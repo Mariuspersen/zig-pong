@@ -24,6 +24,7 @@ pub fn main() !void {
         rl.beginDrawing();
         defer rl.endDrawing();
 
+        ball.boundryCheck(Width, Height);
         paddle1.handleCollision(&ball);
         paddle2.handleCollision(&ball);
 
